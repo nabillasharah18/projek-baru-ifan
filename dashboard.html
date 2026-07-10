@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dashboard Kesiapan Sekolah</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f8f9fb; --card:#ffffff; --text:#1a1a2e; --muted:#64748b;
+    --border:#e2e8f0; --red:#ef4444; --yellow:#f59e0b; --green:#22c55e; --gray:#94a3b8;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1280px;margin:0 auto;padding:32px 20px;}
+  header h1{font-size:28px;font-weight:800;color:#1e293b;}
+  header p{color:var(--muted);margin-top:4px;}
+  .stats{
+    display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin:28px 0;
+  }
+  @media(max-width:1024px){.stats{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:520px){.stats{grid-template-columns:1fr;}}
+  .stat-card{
+    background:var(--card);border:1px solid #f1f5f9;border-radius:16px;
+    padding:18px 20px;box-shadow:0 1px 2px rgba(0,0,0,.04);
+    display:flex;align-items:center;justify-content:space-between;
+    transition:box-shadow .25s ease;
+  }
+  .stat-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.06);}
+  .stat-label{font-size:13px;color:var(--muted);font-weight:500;}
+  .stat-value{font-size:24px;font-weight:800;color:#1e293b;margin-top:4px;}
+  .stat-icon{
+    width:42px;height:42px;border-radius:12px;display:flex;align-items:center;
+    justify-content:center;font-size:20px;flex-shrink:0;
+  }
+  .controls{
+    display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;
+  }
+  .controls > *{flex:1;min-width:180px;}
+  input[type="text"], select{
+    width:100%;padding:11px 14px 11px 40px;border:1px solid var(--border);
+    border-radius:12px;font-size:14px;font-family:inherit;color:var(--text);
+    background:var(--card) no-repeat 14px center / 16px 16px;
+    transition:border-color .2s, box-shadow .2s;
+  }
+  input[type="text"]:focus, select:focus{
+    outline:none;border-color:#60a5fa;box-shadow:0 0 0 3px rgba(59,130,246,.12);
+  }
+  .field{position:relative;}
+  .field svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#94a3b8;pointer-events:none;}
+  .field input, .field select{padding-left:38px;}
+  select{appearance:none;cursor:pointer;}
+  .result-count{font-size:13px;color:var(--muted);margin-bottom:16px;}
+  .grid{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:20px;
+  }
+  @media(max-width:1200px){.grid{grid-template-columns:repeat(3,1fr);}}
+  @media(max-width:860px){.grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:560px){.grid{grid-template-columns:1fr;}}
+  .card{
+    background:var(--card);border:1px solid #f1f5f9;border-radius:16px;
+    padding:24px;box-shadow:0 1px 2px rgba(0,0,0,.04);
+    transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .card:hover{transform:translateY(-4px);box-shadow:0 12px 24px rgba(0,0,0,.08);}
+  .card h3{font-size:17px;font-weight:700;color:#1e293b;margin-bottom:18px;}
+  .row{margin-bottom:14px;}
+  .row-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+  .row-label{display:flex;align-items:center;gap:6px;font-size:13.5px;color:#475569;}
+  .row-score{font-size:13.5px;font-weight:700;color:#334155;}
+  .row-score span{color:#94a3b8;font-weight:400;}
+  .bar-track{width:100%;height:8px;background:#f1f5f9;border-radius:99px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:99px;transition:width .7s ease;}
+  .card-footer{
+    margin-top:16px;padding-top:14px;border-top:1px solid #f1f5f9;
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .card-footer span.label{font-size:11px;color:#94a3b8;font-weight:600;letter-spacing:.04em;text-transform:uppercase;}
+  .badge{
+    display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:99px;
+    font-size:12px;font-weight:600;border:1px solid;
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;}
+  .empty{text-align:center;padding:60px 0;color:#94a3b8;}
+  .empty h3{font-size:15px;font-weight:600;color:#64748b;margin-top:12px;}
+  .empty p{font-size:13px;margin-top:4px;}
+  .loading{text-align:center;padding:80px 0;color:#94a3b8;font-size:14px;}
+  footer{text-align:center;color:#94a3b8;font-size:12px;padding:24px 0 8px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Dashboard Kesiapan Sekolah</h1>
+    <p>Monitoring kesiapan sekolah secara real-time</p>
+  </header>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="controls">
+    <div class="field" style="flex:2;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="text" id="search" placeholder="Cari sekolah..." />
+    </div>
+    <div class="field">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+      <select id="filter">
+        <option value="all">Semua</option>
+        <option value="Siap">Siap</option>
+        <option value="Perlu Pendampingan">Perlu Pendampingan</option>
+        <option value="Belum Siap">Belum Siap</option>
+        <option value="Belum Dinilai">Belum Dinilai</option>
+      </select>
+    </div>
+    <div class="field">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21 16-4 4-4-4"/><path d="M17 20V4"/><path d="m3 8 4-4 4 4"/><path d="M7 4v16"/></svg>
+      <select id="sort">
+        <option value="readinessScore">Skor Kesiapan Akhir</option>
+        <option value="schoolName">Nama Sekolah (A-Z)</option>
+        <option value="curriculumScore">Skor Kurikulum</option>
+        <option value="infrastructureScore">Skor Infrastruktur</option>
+      </select>
+    </div>
+  </div>
+
+  <p class="result-count" id="resultCount"></p>
+  <div id="content"><div class="loading">Memuat data sekolah...</div></div>
+  <footer>Dashboard Kesiapan Sekolah &middot; Data dari Google Spreadsheet</footer>
+</div>
+
+<script>
+/* ====================== KONFIGURASI ======================
+   Isi SPREADSHEET_ID dengan ID spreadsheet Anda (dari URL sheet),
+   dan pastikan sheet sudah di-set "Anyone with the link can view".
+   Kosongkan untuk memakai data contoh (demo).
+   Urutan kolom di sheet: Nama Sekolah | Skor Kurikulum | Skor
+   Infrastruktur | Skor Kesiapan Akhir | Status Kesiapan
+=========================================================== */
+const SPREADSHEET_ID = ""; // contoh: "1AbCDefGhIjkLmnOpQrstuVwxyZ0123456789"
+const SHEET_NAME = "Sheet1";
+
+const DEMO_DATA = [
+  { schoolName: "SDN 1 Mentari", curriculumScore: 92, infrastructureScore: 88, readinessScore: 90, readinessStatus: "Siap" },
+  { schoolName: "SDN 2 Harapan Jaya", curriculumScore: 85, infrastructureScore: 78, readinessScore: 82, readinessStatus: "Siap" },
+  { schoolName: "SDN 3 Cempaka", curriculumScore: 70, infrastructureScore: 65, readinessScore: 68, readinessStatus: "Perlu Pendampingan" },
+  { schoolName: "SDN 4 Bakti Mulia", curriculumScore: 60, infrastructureScore: 55, readinessScore: 58, readinessStatus: "Perlu Pendampingan" },
+  { schoolName: "SDN 5 Tunas Bangsa", curriculumScore: 45, infrastructureScore: 40, readinessScore: 42, readinessStatus: "Belum Siap" },
+  { schoolName: "SDN 6 Pelita Nusa", curriculumScore: 88, infrastructureScore: 90, readinessScore: 89, readinessStatus: "Siap" },
+  { schoolName: "SDN 7 Merdeka", curriculumScore: 72, infrastructureScore: 68, readinessScore: 70, readinessStatus: "Perlu Pendampingan" },
+  { schoolName: "SDN 8 Sejahtera", curriculumScore: 0, infrastructureScore: 0, readinessScore: 0, readinessStatus: "Belum Dinilai" },
+  { schoolName: "SDN 9 Cahaya Ilmu", curriculumScore: 95, infrastructureScore: 92, readinessScore: 94, readinessStatus: "Siap" },
+  { schoolName: "SDN 10 Bina Prestasi", curriculumScore: 38, infrastructureScore: 42, readinessScore: 40, readinessStatus: "Belum Siap" },
+  { schoolName: "SDN 11 Karya Mandiri", curriculumScore: 78, infrastructureScore: 74, readinessScore: 76, readinessStatus: "Siap" },
+  { schoolName: "SDN 12 Gemilang", curriculumScore: 52, infrastructureScore: 48, readinessScore: 50, readinessStatus: "Perlu Pendampingan" },
+];
+
+let schools = [];
+let state = { search: "", filter: "all", sort: "readinessScore" };
+
+function parseCSVLine(line) {
+  const result = [];
+  let cur = "", inQuotes = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (inQuotes) {
+      if (c === '"' && line[i+1] === '"') { cur += '"'; i++; }
+      else if (c === '"') { inQuotes = false; }
+      else cur += c;
+    } else {
+      if (c === '"') inQuotes = true;
+      else if (c === ',') { result.push(cur); cur = ""; }
+      else cur += c;
+    }
+  }
+  result.push(cur);
+  return result;
+}
+
+function parseCSV(text) {
+  const lines = text.trim().split(/\r?\n/);
+  return lines.slice(1).map(parseCSVLine).map(cols => ({
+    schoolName: (cols[0] || "").trim(),
+    curriculumScore: Number(cols[1]) || 0,
+    infrastructureScore: Number(cols[2]) || 0,
+    readinessScore: Number(cols[3]) || 0,
+    readinessStatus: (cols[4] || "Belum Dinilai").trim(),
+  })).filter(s => s.schoolName);
+}
+
+async function fetchSchools() {
+  if (!SPREADSHEET_ID) return DEMO_DATA;
+  const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(SHEET_NAME)}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Gagal memuat spreadsheet");
+  const text = await res.text();
+  return parseCSV(text);
+}
+
+function scoreColor(score) {
+  if (score >= 75) return "var(--green)";
+  if (score >= 50) return "var(--yellow)";
+  return "var(--red)";
+}
+
+function statusConfig(status) {
+  switch (status) {
+    case "Siap": return { bg: "#dcfce7", fg: "#166534", border: "#bbf7d0", dot: "var(--green)" };
+    case "Perlu Pendampingan": return { bg: "#fef3c7", fg: "#92400e", border: "#fde68a", dot: "var(--yellow)" };
+    case "Belum Siap": return { bg: "#fee2e2", fg: "#991b1b", border: "#fecaca", dot: "var(--red)" };
+    default: return { bg: "#f1f5f9", fg: "#475569", border: "#e2e8f0", dot: "var(--gray)" };
+  }
+}
+
+function renderStats() {
+  const total = schools.length;
+  const avg = arr => total ? Math.round(arr.reduce((a,b)=>a+b,0)/total) : 0;
+  const avgCur = avg(schools.map(s=>s.curriculumScore));
+  const avgInf = avg(schools.map(s=>s.infrastructureScore));
+  const avgRea = avg(schools.map(s=>s.readinessScore));
+  const ready = schools.filter(s=>s.readinessStatus === "Siap").length;
+
+  const cards = [
+    { label: "Total Sekolah", value: total, icon: "🏫", bg: "#3b82f6" },
+    { label: "Rata-rata Kurikulum", value: avgCur, icon: "📚", bg: "#8b5cf6" },
+    { label: "Rata-rata Infrastruktur", value: avgInf, icon: "🏗️", bg: "#06b6d4" },
+    { label: "Rata-rata Kesiapan", value: avgRea, icon: "⭐", bg: "#f59e0b" },
+    { label: "Sekolah Siap", value: ready, icon: "✅", bg: "#22c55e" },
+  ];
+
+  document.getElementById("stats").innerHTML = cards.map(c => `
+    <div class="stat-card">
+      <div>
+        <div class="stat-label">${c.label}</div>
+        <div class="stat-value">${c.value}</div>
+      </div>
+      <div class="stat-icon" style="background:${c.bg};">${c.icon}</div>
+    </div>
+  `).join("");
+}
+
+function getFiltered() {
+  let list = [...schools];
+  if (state.search) {
+    const q = state.search.toLowerCase();
+    list = list.filter(s => s.schoolName.toLowerCase().includes(q));
+  }
+  if (state.filter !== "all") {
+    list = list.filter(s => s.readinessStatus === state.filter);
+  }
+  list.sort((a, b) => {
+    if (state.sort === "schoolName") return a.schoolName.localeCompare(b.schoolName);
+    return b[state.sort] - a[state.sort];
+  });
+  return list;
+}
+
+function scoreRow(icon, label, score) {
+  return `
+    <div class="row">
+      <div class="row-top">
+        <div class="row-label">${icon} ${label}</div>
+        <div class="row-score">${score} <span>/ 100</span></div>
+      </div>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:${Math.min(Math.max(score,0),100)}%; background:${scoreColor(score)};"></div>
+      </div>
+    </div>
+  `;
+}
+
+function renderContent() {
+  const list = getFiltered();
+  document.getElementById("resultCount").textContent =
+    `Menampilkan ${list.length} dari ${schools.length} sekolah`;
+
+  const content = document.getElementById("content");
+
+  if (list.length === 0) {
+    content.innerHTML = `
+      <div class="empty">
+        <div style="font-size:40px;">🏫</div>
+        <h3>Tidak ada sekolah ditemukan</h3>
+        <p>Coba ubah filter atau kata kunci pencarian</p>
+      </div>`;
+    return;
+  }
+
+  content.innerHTML = `<div class="grid">${list.map(s => {
+    const sc = statusConfig(s.readinessStatus);
+    return `
+      <div class="card">
+        <h3>${s.schoolName}</h3>
+        ${scoreRow("📚", "Kurikulum", s.curriculumScore)}
+        ${scoreRow("🏫", "Infrastruktur", s.infrastructureScore)}
+        ${scoreRow("⭐", "Kesiapan Akhir", s.readinessScore)}
+        <div class="card-footer">
+          <span class="label">Status</span>
+          <span class="badge" style="background:${sc.bg}; color:${sc.fg}; border-color:${sc.border};">
+            <span class="dot" style="background:${sc.dot};"></span>${s.readinessStatus}
+          </span>
+        </div>
+      </div>
+    `;
+  }).join("")}</div>`;
+}
+
+function render() {
+  renderStats();
+  renderContent();
+}
+
+document.getElementById("search").addEventListener("input", e => {
+  state.search = e.target.value;
+  renderContent();
+});
+document.getElementById("filter").addEventListener("change", e => {
+  state.filter = e.target.value;
+  renderContent();
+});
+document.getElementById("sort").addEventListener("change", e => {
+  state.sort = e.target.value;
+  renderContent();
+});
+
+(async function init() {
+  try {
+    schools = await fetchSchools();
+  } catch (err) {
+    console.error(err);
+    schools = DEMO_DATA;
+  }
+  render();
+})();
+</script>
+</body>
+</html>
