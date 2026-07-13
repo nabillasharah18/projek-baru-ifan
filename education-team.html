@@ -56,12 +56,12 @@
     </div>
 
     <div id="setup" class="setup-card" style="display:none">
-      <h2 class="heading-font">Setup GitHub Token diperlukan</h2>
-      <p>Dashboard ini menyimpan data tugas &amp; komentar ke file JSON di repo GitHub lewat Vercel serverless function. Langkah:</p>
+      <h2 class="heading-font">Setup diperlukan</h2>
+      <p>Dashboard ini membaca tugas dari Google Spreadsheet dan menyimpan komentar &amp; status ke GitHub. Langkah:</p>
       <ol>
-        <li>Buka <strong>github.com → Settings → Developer settings → Personal access tokens → Fine-grained tokens</strong>.</li>
-        <li>Klik <strong>Generate new token</strong>. Pilih repo <code>projek-baru-ifan</code>, beri permission <strong>Contents: Read and write</strong>.</li>
-        <li>Salin token yang dihasilkan.</li>
+        <li>Buka <strong>Google Spreadsheet</strong> data tugas → klik <strong>Share</strong> → ubah ke <strong>"Anyone with the link"</strong> → <strong>Viewer</strong>.</li>
+        <li>Buka <strong>github.com → Settings → Developer settings → Personal access tokens</strong>.</li>
+        <li>Klik <strong>Generate new token (classic)</strong>. Beri scope <strong>repo</strong>. Salin token.</li>
         <li>Buka <strong>Vercel dashboard → project ini → Settings → Environment Variables</strong>.</li>
         <li>Tambah variable: <code>GITHUB_TOKEN</code> = token yang tadi disalin.</li>
         <li>Klik <strong>Redeploy</strong> dari tab Deployments supaya environment variable terbaca.</li>

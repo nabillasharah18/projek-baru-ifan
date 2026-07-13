@@ -16,7 +16,7 @@ const els = {
   statProgress: document.getElementById("stat-progress"),
 };
 
-const EXTRA_COMMENTERS = ["Dewi"];
+const EXTRA_COMMENTERS = [];
 
 let members = [];
 let tasksByMember = new Map();
@@ -44,7 +44,7 @@ async function loadData() {
     }
     const data = await res.json();
     applyData(data);
-    setBanner("live", "Tersambung ke GitHub — data di-refresh otomatis tiap 30 detik");
+    setBanner("live", "Tersambung ke Google Sheets + GitHub — data di-refresh otomatis tiap 30 detik");
     startPolling();
   } catch (err) {
     console.error(err);
