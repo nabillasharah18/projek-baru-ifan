@@ -3,7 +3,15 @@
   "hidden_tasks": [
     "s5u93ec"
   ],
-  "local_tasks": [],
+  "local_tasks": [
+    {
+      "id": "tmrj0j1c8f77i",
+      "member_name": "Sharah",
+      "body": "Pendampingan BIMA Cirebon - koordinasi dengan Mujek",
+      "done": false,
+      "created_at": "2026-07-13T09:21:18.728Z"
+    }
+  ],
   "comments": [],
   "task_progress": {
     "sdxe1nb": "On going"
