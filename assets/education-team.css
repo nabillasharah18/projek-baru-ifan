@@ -190,9 +190,17 @@ h1 { font-size: clamp(26px, 3.4vw, 34px); font-weight: 800; margin: 2px 0 0; tex
 .comment-panel.open { display: flex; }
 .comment-list { display: flex; flex-direction: column; gap: 8px; }
 .comment-item { font-size: 13px; }
+.comment-header-row { display: flex; align-items: center; justify-content: space-between; }
 .comment-item .comment-author { font-weight: 700; color: var(--text); }
 .comment-item .comment-time { color: var(--text-muted); font-size: 11px; margin-left: 6px; }
 .comment-item .comment-body { color: var(--text); margin-top: 1px; white-space: pre-wrap; }
+.comment-delete {
+  background: none; border: none; color: var(--text-muted); font-size: 16px; line-height: 1;
+  padding: 2px 6px; border-radius: 6px; opacity: 0; cursor: pointer;
+  transition: opacity 0.1s ease;
+}
+.comment-item:hover .comment-delete { opacity: 0.6; }
+.comment-delete:hover { opacity: 1 !important; color: var(--danger); background: var(--surface); }
 .comment-empty { color: var(--text-muted); font-size: 12.5px; font-style: italic; }
 
 .comment-form { display: flex; flex-direction: column; gap: 6px; }

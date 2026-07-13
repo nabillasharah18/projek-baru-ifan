@@ -16,6 +16,8 @@ const els = {
   statProgress: document.getElementById("stat-progress"),
 };
 
+const EXTRA_COMMENTERS = ["Dewi"];
+
 let members = [];
 let tasksByMember = new Map();
 let commentsByTask = new Map();
@@ -271,7 +273,30 @@ function buildTaskItem(member, task) {
     comments.forEach((c) => {
       const item = document.createElement("div");
       item.className = "comment-item";
-      item.innerHTML = `<span class="comment-author">${escapeHtml(c.author_name)}</span><span class="comment-time">${formatTime(c.created_at)}</span><div class="comment-body">${escapeHtml(c.body)}</div>`;
+      const headerRow = document.createElement("div");
+      headerRow.className = "comment-header-row";
+      headerRow.innerHTML = `<span><span class="comment-author">${escapeHtml(c.author_name)}</span><span class="comment-time">${formatTime(c.created_at)}</span></span>`;
+      const delBtn = document.createElement("button");
+      delBtn.type = "button";
+      delBtn.className = "comment-delete";
+      delBtn.title = "Hapus komentar";
+      delBtn.innerHTML = "&times;";
+      delBtn.addEventListener("click", async () => {
+        if (!confirm("Hapus komentar ini?")) return;
+        try {
+          await apiAction({ action: "delete_comment", id: c.id });
+          const res = await fetch(API);
+          if (res.ok) applyData(await res.json());
+        } catch (err) {
+          alert("Gagal menghapus komentar: " + err.message);
+        }
+      });
+      headerRow.appendChild(delBtn);
+      item.appendChild(headerRow);
+      const bodyDiv = document.createElement("div");
+      bodyDiv.className = "comment-body";
+      bodyDiv.textContent = c.body;
+      item.appendChild(bodyDiv);
       commentList.appendChild(item);
     });
   }
@@ -280,10 +305,11 @@ function buildTaskItem(member, task) {
   const form = document.createElement("form");
   form.className = "comment-form";
   const select = document.createElement("select");
-  members.forEach((m) => {
+  const allNames = members.map((m) => m.name).concat(EXTRA_COMMENTERS);
+  allNames.forEach((name) => {
     const opt = document.createElement("option");
-    opt.value = m.name;
-    opt.textContent = m.name;
+    opt.value = name;
+    opt.textContent = name;
     select.appendChild(opt);
   });
   const row2 = document.createElement("div");
@@ -348,16 +374,12 @@ function render() {
   let anyVisible = false;
   [...els.grid.children].forEach((card) => {
     const memberMatches = activeMember === "all" || activeMember === card.dataset.member;
-    let cardHasVisible = false;
     card.querySelectorAll(".task-item").forEach((item) => {
       const textMatches = !searchTerm || item.dataset.text.includes(searchTerm);
-      const visible = memberMatches && textMatches;
-      item.classList.toggle("hidden", !visible);
-      if (visible) cardHasVisible = true;
+      item.classList.toggle("hidden", !(memberMatches && textMatches));
     });
-    const show = memberMatches && cardHasVisible;
-    card.style.display = show ? "" : "none";
-    if (show) anyVisible = true;
+    card.style.display = memberMatches ? "" : "none";
+    if (memberMatches) anyVisible = true;
   });
   els.empty.style.display = anyVisible ? "none" : "block";
   els.grid.style.display = anyVisible ? "grid" : "none";
