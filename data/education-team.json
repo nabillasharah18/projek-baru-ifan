@@ -3,7 +3,15 @@
   "hidden_tasks": [
     "s5u93ec"
   ],
-  "local_tasks": [],
+  "local_tasks": [
+    {
+      "id": "tmrj01jqh2kwo",
+      "member_name": "Sharah",
+      "body": "Tes",
+      "done": false,
+      "created_at": "2026-07-13T09:07:42.761Z"
+    }
+  ],
   "comments": [],
   "task_progress": {
     "sdxe1nb": "On going"
