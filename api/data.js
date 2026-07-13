@@ -184,10 +184,23 @@ function mergeData(sheet, state) {
   const hiddenTasks = new Set(state.hidden_tasks || []);
   const localTasks = state.local_tasks || [];
   const comments = state.comments || [];
+  const taskEdits = state.task_edits || {};
+  const taskProgress = state.task_progress || {};
 
   const tasks = sheet.tasks
     .filter((t) => !hiddenTasks.has(t.id))
-    .map((t) => ({ ...t, done: doneTasks.has(t.id) }));
+    .map((t) => {
+      const edit = taskEdits[t.id];
+      const prog = taskProgress[t.id];
+      return {
+        ...t,
+        done: doneTasks.has(t.id),
+        ...(edit
+          ? { body: edit.body, original_body: edit.original_body, edited_at: edit.edited_at }
+          : {}),
+        ...(prog !== undefined ? { progress: prog } : {}),
+      };
+    });
 
   tasks.push(...localTasks);
 
@@ -284,6 +297,45 @@ module.exports = async function handler(req, res) {
             (c) => c.task_id !== params.id
           );
         }, `[dashboard] Hapus tugas`);
+        return res.status(200).json({ ok: true });
+      }
+
+      if (action === "edit_task") {
+        if (!params.id || !params.body) {
+          return res.status(400).json({ error: "id dan body wajib diisi" });
+        }
+        await readModifyWrite((data) => {
+          const local = (data.local_tasks || []).find((t) => t.id === params.id);
+          if (local) {
+            if (!local.original_body) local.original_body = local.body;
+            local.body = params.body;
+            local.edited_at = new Date().toISOString();
+            return;
+          }
+          if (!data.task_edits) data.task_edits = {};
+          const edit = data.task_edits[params.id] || {};
+          if (!edit.original_body) edit.original_body = params.original_body;
+          edit.body = params.body;
+          edit.edited_at = new Date().toISOString();
+          data.task_edits[params.id] = edit;
+        }, `[dashboard] Edit tugas`);
+        return res.status(200).json({ ok: true });
+      }
+
+      if (action === "update_progress") {
+        await readModifyWrite((data) => {
+          const local = (data.local_tasks || []).find((t) => t.id === params.id);
+          if (local) {
+            local.progress = params.progress || null;
+            return;
+          }
+          if (!data.task_progress) data.task_progress = {};
+          if (params.progress) {
+            data.task_progress[params.id] = params.progress;
+          } else {
+            delete data.task_progress[params.id];
+          }
+        }, `[dashboard] Update progress`);
         return res.status(200).json({ ok: true });
       }
 

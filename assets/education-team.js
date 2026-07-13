@@ -254,12 +254,37 @@ function buildTaskItem(member, task) {
     }
   });
 
-  if (task.progress) {
-    const badge = document.createElement("span");
-    badge.className = "progress-badge " + progressClass(task.progress);
-    badge.textContent = task.progress;
-    meta.appendChild(badge);
-  }
+  const progressSelect = document.createElement("select");
+  progressSelect.className = "progress-select " + progressClass(task.progress || "");
+  ["", "Belum mulai", "On going", "Selesai"].forEach((opt) => {
+    const o = document.createElement("option");
+    o.value = opt;
+    o.textContent = opt || "— Pilih —";
+    if ((task.progress || "") === opt) o.selected = true;
+    progressSelect.appendChild(o);
+  });
+  progressSelect.addEventListener("change", async () => {
+    const prev = progressSelect.className;
+    progressSelect.className = "progress-select " + progressClass(progressSelect.value);
+    progressSelect.disabled = true;
+    try {
+      await apiAction({ action: "update_progress", id: task.id, progress: progressSelect.value });
+      const res = await fetch(API);
+      if (res.ok) applyData(await res.json());
+    } catch (err) {
+      progressSelect.className = prev;
+      alert("Gagal update progress: " + err.message);
+    }
+    progressSelect.disabled = false;
+  });
+  meta.appendChild(progressSelect);
+
+  const editBtn = document.createElement("button");
+  editBtn.type = "button";
+  editBtn.className = "task-edit-btn";
+  editBtn.title = "Edit tugas";
+  editBtn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 3a2.83 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>`;
+  meta.appendChild(editBtn);
   meta.appendChild(commentBtn);
   meta.appendChild(deleteBtn);
 
@@ -267,6 +292,58 @@ function buildTaskItem(member, task) {
   row.appendChild(label);
   row.appendChild(meta);
   li.appendChild(row);
+
+  if (task.original_body) {
+    const origRow = document.createElement("div");
+    origRow.className = "task-original";
+    origRow.textContent = task.original_body;
+    li.appendChild(origRow);
+  }
+
+  const editArea = document.createElement("div");
+  editArea.className = "task-edit-area";
+  editArea.style.display = "none";
+  const editInput = document.createElement("input");
+  editInput.type = "text";
+  editInput.className = "task-edit-input";
+  editInput.value = task.body;
+  editInput.maxLength = 300;
+  const saveEditBtn = document.createElement("button");
+  saveEditBtn.type = "button";
+  saveEditBtn.className = "task-edit-save";
+  saveEditBtn.textContent = "Simpan";
+  const cancelEditBtn = document.createElement("button");
+  cancelEditBtn.type = "button";
+  cancelEditBtn.className = "task-edit-cancel";
+  cancelEditBtn.textContent = "Batal";
+
+  editBtn.addEventListener("click", () => {
+    const show = editArea.style.display === "none";
+    editArea.style.display = show ? "flex" : "none";
+    if (show) { editInput.value = task.body; editInput.focus(); }
+  });
+  cancelEditBtn.addEventListener("click", () => { editArea.style.display = "none"; });
+  saveEditBtn.addEventListener("click", async () => {
+    const newBody = editInput.value.trim();
+    if (!newBody || newBody === task.body) { editArea.style.display = "none"; return; }
+    saveEditBtn.disabled = true;
+    saveEditBtn.textContent = "Menyimpan…";
+    try {
+      await apiAction({ action: "edit_task", id: task.id, body: newBody, original_body: task.original_body || task.body });
+      editArea.style.display = "none";
+      const res = await fetch(API);
+      if (res.ok) applyData(await res.json());
+    } catch (err) {
+      alert("Gagal mengedit: " + err.message);
+    }
+    saveEditBtn.disabled = false;
+    saveEditBtn.textContent = "Simpan";
+  });
+
+  editArea.appendChild(editInput);
+  editArea.appendChild(saveEditBtn);
+  editArea.appendChild(cancelEditBtn);
+  li.appendChild(editArea);
 
   const panel = document.createElement("div");
   panel.className = "comment-panel" + (openPanels.has(task.id) ? " open" : "");
