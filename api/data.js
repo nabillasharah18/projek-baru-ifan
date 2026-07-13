@@ -87,11 +87,12 @@ async function fetchSheet() {
   for (let i = 1; i < rows.length; i++) {
     const name = (rows[i][0] || "").trim();
     const pekerjaan = (rows[i][1] || "").trim();
+    const progress = (rows[i][2] || "").trim();
     if (!name) continue;
 
     const accent =
       ACCENT_MAP[name] || ACCENT_CYCLE[colorIdx++ % ACCENT_CYCLE.length];
-    members.push({ name, accent });
+    members.push({ name, accent, progress: progress || null });
 
     if (pekerjaan) {
       pekerjaan

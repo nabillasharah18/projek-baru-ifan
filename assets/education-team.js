@@ -143,11 +143,14 @@ function buildGrid() {
 
     const head = document.createElement("div");
     head.className = "card-head";
+    const progressBadge = member.progress
+      ? `<span class="progress-badge ${progressClass(member.progress)}">${escapeHtml(member.progress)}</span>`
+      : "";
     head.innerHTML = `
       <div class="card-head-top">
         <div class="avatar">${initials(member.name)}</div>
         <div>
-          <div class="card-name">${member.name}</div>
+          <div class="card-name">${member.name}${progressBadge}</div>
           <div class="card-count">${doneCount} dari ${tasks.length} selesai</div>
         </div>
       </div>
@@ -460,6 +463,14 @@ els.search.addEventListener("input", (e) => {
   searchTerm = e.target.value.trim().toLowerCase();
   render();
 });
+
+function progressClass(text) {
+  const t = text.toLowerCase();
+  if (t.includes("selesai") || t.includes("done") || t.includes("complete")) return "progress-done";
+  if (t.includes("proses") || t.includes("progress") || t.includes("ongoing") || t.includes("berjalan")) return "progress-ongoing";
+  if (t.includes("belum") || t.includes("not") || t.includes("pending") || t.includes("tunggu")) return "progress-pending";
+  return "progress-default";
+}
 
 function escapeHtml(str) {
   const div = document.createElement("div");
