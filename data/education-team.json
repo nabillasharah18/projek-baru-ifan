@@ -1,6 +1,43 @@
 {
   "done_tasks": [],
   "hidden_tasks": [],
-  "local_tasks": [],
-  "comments": []
+  "local_tasks": [
+    {
+      "id": "tmriskk20o3lm",
+      "member_name": "Sharah",
+      "body": "Koordinasi dengan Muzaki untuk TarBak",
+      "done": false,
+      "created_at": "2026-07-13T05:38:32.712Z"
+    }
+  ],
+  "comments": [
+    {
+      "id": "cmris4m0b2adh",
+      "task_id": "seugu7z",
+      "author_name": "Sharah",
+      "body": "Halo test",
+      "created_at": "2026-07-13T05:26:08.747Z"
+    },
+    {
+      "id": "cmris5bqw967p",
+      "task_id": "seugu7z",
+      "author_name": "Sharah",
+      "body": "Test komentar kedua ini mau melihat sejauh mana bisa kasih komen.",
+      "created_at": "2026-07-13T05:26:42.104Z"
+    },
+    {
+      "id": "cmris79xkcnwp",
+      "task_id": "seugu7z",
+      "author_name": "Syika",
+      "body": "Ini Syika kasih komen",
+      "created_at": "2026-07-13T05:28:13.065Z"
+    },
+    {
+      "id": "cmriss4dueauh",
+      "task_id": "seugu7z",
+      "author_name": "Sharah",
+      "body": "test komentar",
+      "created_at": "2026-07-13T05:44:25.650Z"
+    }
+  ]
 }
