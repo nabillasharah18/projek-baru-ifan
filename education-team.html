@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dashboard Pekerjaan Tim Education</title>
+<link rel="stylesheet" href="assets/education-team.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header class="page-header">
+      <span class="eyebrow heading-font">Yayasan Pendidikan Kader Bangsa Indonesia</span>
+      <h1 class="heading-font">Dashboard Pekerjaan Tim Education</h1>
+      <p class="institution">Tambah tugas, centang progres, dan diskusi lewat komentar — tersinkron langsung untuk semua anggota tim.</p>
+    </header>
+
+    <div id="status-banner" class="status-banner">
+      <span class="status-dot"></span>
+      <span id="status-banner-text">Memuat…</span>
+    </div>
+
+    <div id="app">
+      <section class="stats" aria-label="Ringkasan">
+        <div class="stat">
+          <div class="num heading-font" id="stat-members">–</div>
+          <div class="label">Anggota tim</div>
+        </div>
+        <div class="stat">
+          <div class="num heading-font" id="stat-total">–</div>
+          <div class="label">Total pekerjaan</div>
+        </div>
+        <div class="stat accent">
+          <div class="num heading-font" id="stat-done">–</div>
+          <div class="label">Selesai dicentang</div>
+        </div>
+        <div class="stat">
+          <div class="num heading-font" id="stat-progress">–</div>
+          <div class="label">Progres keseluruhan</div>
+        </div>
+      </section>
+
+      <div class="controls">
+        <div class="search-row">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="text" id="search" placeholder="Cari pekerjaan atau kata kunci…" autocomplete="off">
+        </div>
+        <div class="chips" id="chips"></div>
+      </div>
+
+      <div class="grid" id="grid"></div>
+
+      <div class="empty-state" id="empty" style="display:none">
+        <strong>Tidak ada pekerjaan yang cocok</strong>
+        Coba ubah kata kunci pencarian atau pilih filter anggota lain.
+      </div>
+    </div>
+
+    <div id="setup" class="setup-card" style="display:none">
+      <h2 class="heading-font">Setup Supabase diperlukan</h2>
+      <p>Dashboard ini butuh database Supabase supaya tugas &amp; komentar tersimpan bersama untuk semua anggota tim. Langkah:</p>
+      <ol>
+        <li>Buat project gratis di <code>supabase.com</code>.</li>
+        <li>Buka <strong>SQL Editor</strong>, jalankan isi file <code>supabase/schema.sql</code> dari repo ini.</li>
+        <li>Buka <strong>Project Settings → API</strong>, salin <code>Project URL</code> dan <code>anon public key</code>.</li>
+        <li>Isi kedua nilai itu ke file <code>supabase-config.js</code> di root repo.</li>
+        <li>Commit &amp; push — Vercel akan otomatis deploy ulang.</li>
+      </ol>
+    </div>
+
+    <footer class="page-footer">Dashboard Tim Education · Yayasan Pendidikan Kader Bangsa Indonesia</footer>
+  </div>
+
+  <script type="module" src="assets/education-team.js"></script>
+</body>
+</html>
