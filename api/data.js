@@ -96,7 +96,7 @@ async function fetchSheet() {
     if (pekerjaan) {
       pekerjaan
         .split("\n")
-        .map((l) => l.replace(/^[•\-\*·]\s*/, "").trim())
+        .map((l) => l.replace(/[⁠​‌‍﻿]/g, "").replace(/^[•\-\*·]\s*/, "").trim())
         .filter((l) => l.length > 0)
         .forEach((body) => {
           tasks.push({
