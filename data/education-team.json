@@ -1,54 +1,283 @@
 {
   "members": [
-    { "name": "Sharah", "accent": "rose" },
-    { "name": "Raras", "accent": "peach" },
-    { "name": "Elyska", "accent": "yellow" },
-    { "name": "Syika", "accent": "mint" },
-    { "name": "Wulan", "accent": "blue" },
-    { "name": "Tasya", "accent": "lavender" }
+    {
+      "name": "Sharah",
+      "accent": "rose"
+    },
+    {
+      "name": "Raras",
+      "accent": "peach"
+    },
+    {
+      "name": "Elyska",
+      "accent": "yellow"
+    },
+    {
+      "name": "Syika",
+      "accent": "mint"
+    },
+    {
+      "name": "Wulan",
+      "accent": "blue"
+    },
+    {
+      "name": "Tasya",
+      "accent": "lavender"
+    }
   ],
   "tasks": [
-    { "id": "t01", "member_name": "Sharah", "body": "Follow up IBO for HBC school code", "done": false, "created_at": "2026-06-30T08:00:00Z" },
-    { "id": "t02", "member_name": "Sharah", "body": "Registering HoS HBC Cat 1", "done": false, "created_at": "2026-06-30T08:01:00Z" },
-    { "id": "t03", "member_name": "Sharah", "body": "Follow up recruitment and English enrichment HBC", "done": false, "created_at": "2026-06-30T08:02:00Z" },
-    { "id": "t04", "member_name": "Sharah", "body": "Get ready for NSEI distribution", "done": false, "created_at": "2026-06-30T08:03:00Z" },
-    { "id": "t05", "member_name": "Sharah", "body": "Processing Parent Academy feedback", "done": false, "created_at": "2026-06-30T08:04:00Z" },
-    { "id": "t06", "member_name": "Sharah", "body": "Prepare material guideline and contact potential speakers for Parent Webinar 2nd edition", "done": false, "created_at": "2026-06-30T08:05:00Z" },
-    { "id": "t07", "member_name": "Sharah", "body": "Prepare detail International Curriculum Preparation module (SNT module as well)", "done": false, "created_at": "2026-06-30T08:06:00Z" },
-    { "id": "t08", "member_name": "Sharah", "body": "Prepare and coordinate Generation Global workshop", "done": false, "created_at": "2026-06-30T08:07:00Z" },
-
-    { "id": "t09", "member_name": "Raras", "body": "Signing Perjanjian Kerja Matauli : Juan, Rido, dan Yulinar", "done": false, "created_at": "2026-06-30T08:08:00Z" },
-    { "id": "t10", "member_name": "Raras", "body": "Signing Perjajn Kerja KTB: Rantau, Ahmad, Munalim, Joko, Aulia", "done": false, "created_at": "2026-06-30T08:09:00Z" },
-    { "id": "t11", "member_name": "Raras", "body": "Offering kandidat (termasuk reference check dan initial documents): Librarian, Konselor, Driver, CCA Admin, Finance & HR Admin", "done": false, "created_at": "2026-06-30T08:10:00Z" },
-    { "id": "t12", "member_name": "Raras", "body": "Rejection letter gelombang kandidat akhir", "done": false, "created_at": "2026-06-30T08:11:00Z" },
-    { "id": "t13", "member_name": "Raras", "body": "Pendaftaran BPJS dan BPJSTK karyawan baru & update payroll ke finance", "done": false, "created_at": "2026-06-30T08:12:00Z" },
-    { "id": "t14", "member_name": "Raras", "body": "Perbaikan Database employee", "done": false, "created_at": "2026-06-30T08:13:00Z" },
-    { "id": "t15", "member_name": "Raras", "body": "Follow up hubungan industrial Pak Ulung", "done": false, "created_at": "2026-06-30T08:14:00Z" },
-    { "id": "t16", "member_name": "Raras", "body": "Perpanjangan kontrak Rio, Yoga, dan Rizky Juventus", "done": false, "created_at": "2026-06-30T08:15:00Z" },
-
-    { "id": "t17", "member_name": "Elyska", "body": "Assisting distribution of the uniform at KTB", "done": false, "created_at": "2026-06-30T08:16:00Z" },
-    { "id": "t18", "member_name": "Elyska", "body": "Finishing uniform handbook for next year production process", "done": false, "created_at": "2026-06-30T08:17:00Z" },
-    { "id": "t19", "member_name": "Elyska", "body": "Following up uniforms that will be shipped to KTB this week", "done": false, "created_at": "2026-06-30T08:18:00Z" },
-    { "id": "t20", "member_name": "Elyska", "body": "Coordinating with finance regarding sewing allowance (need to transfer the allowance to KTB GA team)", "done": false, "created_at": "2026-06-30T08:19:00Z" },
-    { "id": "t21", "member_name": "Elyska", "body": "Following up on returned fabric to vendor and sending it back to convection", "done": false, "created_at": "2026-06-30T08:20:00Z" },
-
-    { "id": "t22", "member_name": "Syika", "body": "Assisting the installation of Mosyle to all laptops at KTB (macbook Neo will start the installation this week on 15 and 16, will send formal email to school leaders about this)", "done": false, "created_at": "2026-06-30T08:21:00Z" },
-    { "id": "t23", "member_name": "Syika", "body": "Developing NSTPrep website mockup", "done": false, "created_at": "2026-06-30T08:22:00Z" },
-    { "id": "t24", "member_name": "Syika", "body": "Prep for laptop distribution at KTB", "done": false, "created_at": "2026-06-30T08:23:00Z" },
-    { "id": "t25", "member_name": "Syika", "body": "Reminding GDA for Google Plus new licenses and existing ones (deadline on July 27th) and MDM extension", "done": false, "created_at": "2026-06-30T08:24:00Z" },
-    { "id": "t26", "member_name": "Syika", "body": "Coordinating with Pak Rio for digital infrastructure readiness at KTB", "done": false, "created_at": "2026-06-30T08:25:00Z" },
-
-    { "id": "t27", "member_name": "Wulan", "body": "Arrange paket soal NST Prediction 1, NST Practice 1-3", "done": false, "created_at": "2026-06-30T08:26:00Z" },
-    { "id": "t28", "member_name": "Wulan", "body": "Mirroring paket soal dengan AI supaya tidak sama persis", "done": false, "created_at": "2026-06-30T08:27:00Z" },
-    { "id": "t29", "member_name": "Wulan", "body": "Follow Up keputusan penawaran Algobash ke mas Aqsa", "done": false, "created_at": "2026-06-30T08:28:00Z" },
-    { "id": "t30", "member_name": "Wulan", "body": "Koordinasi dengan tim marketing untuk desain logo & coming soon", "done": false, "created_at": "2026-06-30T08:29:00Z" },
-    { "id": "t31", "member_name": "Wulan", "body": "Follow Up penawaran 1Engage untuk WABA (perlu WA CS NST terpisah dengan SPMB)", "done": false, "created_at": "2026-06-30T08:30:00Z" },
-
-    { "id": "t32", "member_name": "Tasya", "body": "Merespons setiap pertanyaan yang masuk ke WhatsApp dan email Customer Service.", "done": false, "created_at": "2026-06-30T08:31:00Z" },
-    { "id": "t33", "member_name": "Tasya", "body": "Mengirimkan blast WhatsApp rekaman dan materi webinar Parents Academy: Supporting Your Child's Path to University.", "done": false, "created_at": "2026-06-30T08:32:00Z" },
-    { "id": "t34", "member_name": "Tasya", "body": "Menyusun Terms of Reference (TOR) untuk kegiatan bersama 20 Universitas Terbaik di Indonesia dan Boarding Life Training.", "done": false, "created_at": "2026-06-30T08:33:00Z" },
-    { "id": "t35", "member_name": "Tasya", "body": "Membuat database nomor telepon calon pendaftar yang berminat mengikuti SPMB SMA KTB untuk keperluan blast promosi NST.", "done": false, "created_at": "2026-06-30T08:34:00Z" },
-    { "id": "t36", "member_name": "Tasya", "body": "Mencari ide konten promosi NST.", "done": false, "created_at": "2026-06-30T08:35:00Z" }
+    {
+      "id": "t01",
+      "member_name": "Sharah",
+      "body": "Follow up IBO for HBC school code",
+      "done": true,
+      "created_at": "2026-06-30T08:00:00Z"
+    },
+    {
+      "id": "t02",
+      "member_name": "Sharah",
+      "body": "Registering HoS HBC Cat 1",
+      "done": false,
+      "created_at": "2026-06-30T08:01:00Z"
+    },
+    {
+      "id": "t03",
+      "member_name": "Sharah",
+      "body": "Follow up recruitment and English enrichment HBC",
+      "done": false,
+      "created_at": "2026-06-30T08:02:00Z"
+    },
+    {
+      "id": "t04",
+      "member_name": "Sharah",
+      "body": "Get ready for NSEI distribution",
+      "done": false,
+      "created_at": "2026-06-30T08:03:00Z"
+    },
+    {
+      "id": "t05",
+      "member_name": "Sharah",
+      "body": "Processing Parent Academy feedback",
+      "done": false,
+      "created_at": "2026-06-30T08:04:00Z"
+    },
+    {
+      "id": "t06",
+      "member_name": "Sharah",
+      "body": "Prepare material guideline and contact potential speakers for Parent Webinar 2nd edition",
+      "done": false,
+      "created_at": "2026-06-30T08:05:00Z"
+    },
+    {
+      "id": "t07",
+      "member_name": "Sharah",
+      "body": "Prepare detail International Curriculum Preparation module (SNT module as well)",
+      "done": false,
+      "created_at": "2026-06-30T08:06:00Z"
+    },
+    {
+      "id": "t08",
+      "member_name": "Sharah",
+      "body": "Prepare and coordinate Generation Global workshop",
+      "done": false,
+      "created_at": "2026-06-30T08:07:00Z"
+    },
+    {
+      "id": "t09",
+      "member_name": "Raras",
+      "body": "Signing Perjanjian Kerja Matauli : Juan, Rido, dan Yulinar",
+      "done": false,
+      "created_at": "2026-06-30T08:08:00Z"
+    },
+    {
+      "id": "t10",
+      "member_name": "Raras",
+      "body": "Signing Perjajn Kerja KTB: Rantau, Ahmad, Munalim, Joko, Aulia",
+      "done": false,
+      "created_at": "2026-06-30T08:09:00Z"
+    },
+    {
+      "id": "t11",
+      "member_name": "Raras",
+      "body": "Offering kandidat (termasuk reference check dan initial documents): Librarian, Konselor, Driver, CCA Admin, Finance & HR Admin",
+      "done": false,
+      "created_at": "2026-06-30T08:10:00Z"
+    },
+    {
+      "id": "t12",
+      "member_name": "Raras",
+      "body": "Rejection letter gelombang kandidat akhir",
+      "done": false,
+      "created_at": "2026-06-30T08:11:00Z"
+    },
+    {
+      "id": "t13",
+      "member_name": "Raras",
+      "body": "Pendaftaran BPJS dan BPJSTK karyawan baru & update payroll ke finance",
+      "done": false,
+      "created_at": "2026-06-30T08:12:00Z"
+    },
+    {
+      "id": "t14",
+      "member_name": "Raras",
+      "body": "Perbaikan Database employee",
+      "done": false,
+      "created_at": "2026-06-30T08:13:00Z"
+    },
+    {
+      "id": "t15",
+      "member_name": "Raras",
+      "body": "Follow up hubungan industrial Pak Ulung",
+      "done": false,
+      "created_at": "2026-06-30T08:14:00Z"
+    },
+    {
+      "id": "t16",
+      "member_name": "Raras",
+      "body": "Perpanjangan kontrak Rio, Yoga, dan Rizky Juventus",
+      "done": false,
+      "created_at": "2026-06-30T08:15:00Z"
+    },
+    {
+      "id": "t17",
+      "member_name": "Elyska",
+      "body": "Assisting distribution of the uniform at KTB",
+      "done": false,
+      "created_at": "2026-06-30T08:16:00Z"
+    },
+    {
+      "id": "t18",
+      "member_name": "Elyska",
+      "body": "Finishing uniform handbook for next year production process",
+      "done": false,
+      "created_at": "2026-06-30T08:17:00Z"
+    },
+    {
+      "id": "t19",
+      "member_name": "Elyska",
+      "body": "Following up uniforms that will be shipped to KTB this week",
+      "done": false,
+      "created_at": "2026-06-30T08:18:00Z"
+    },
+    {
+      "id": "t20",
+      "member_name": "Elyska",
+      "body": "Coordinating with finance regarding sewing allowance (need to transfer the allowance to KTB GA team)",
+      "done": false,
+      "created_at": "2026-06-30T08:19:00Z"
+    },
+    {
+      "id": "t21",
+      "member_name": "Elyska",
+      "body": "Following up on returned fabric to vendor and sending it back to convection",
+      "done": false,
+      "created_at": "2026-06-30T08:20:00Z"
+    },
+    {
+      "id": "t22",
+      "member_name": "Syika",
+      "body": "Assisting the installation of Mosyle to all laptops at KTB (macbook Neo will start the installation this week on 15 and 16, will send formal email to school leaders about this)",
+      "done": false,
+      "created_at": "2026-06-30T08:21:00Z"
+    },
+    {
+      "id": "t23",
+      "member_name": "Syika",
+      "body": "Developing NSTPrep website mockup",
+      "done": false,
+      "created_at": "2026-06-30T08:22:00Z"
+    },
+    {
+      "id": "t24",
+      "member_name": "Syika",
+      "body": "Prep for laptop distribution at KTB",
+      "done": false,
+      "created_at": "2026-06-30T08:23:00Z"
+    },
+    {
+      "id": "t25",
+      "member_name": "Syika",
+      "body": "Reminding GDA for Google Plus new licenses and existing ones (deadline on July 27th) and MDM extension",
+      "done": false,
+      "created_at": "2026-06-30T08:24:00Z"
+    },
+    {
+      "id": "t26",
+      "member_name": "Syika",
+      "body": "Coordinating with Pak Rio for digital infrastructure readiness at KTB",
+      "done": false,
+      "created_at": "2026-06-30T08:25:00Z"
+    },
+    {
+      "id": "t27",
+      "member_name": "Wulan",
+      "body": "Arrange paket soal NST Prediction 1, NST Practice 1-3",
+      "done": false,
+      "created_at": "2026-06-30T08:26:00Z"
+    },
+    {
+      "id": "t28",
+      "member_name": "Wulan",
+      "body": "Mirroring paket soal dengan AI supaya tidak sama persis",
+      "done": false,
+      "created_at": "2026-06-30T08:27:00Z"
+    },
+    {
+      "id": "t29",
+      "member_name": "Wulan",
+      "body": "Follow Up keputusan penawaran Algobash ke mas Aqsa",
+      "done": false,
+      "created_at": "2026-06-30T08:28:00Z"
+    },
+    {
+      "id": "t30",
+      "member_name": "Wulan",
+      "body": "Koordinasi dengan tim marketing untuk desain logo & coming soon",
+      "done": false,
+      "created_at": "2026-06-30T08:29:00Z"
+    },
+    {
+      "id": "t31",
+      "member_name": "Wulan",
+      "body": "Follow Up penawaran 1Engage untuk WABA (perlu WA CS NST terpisah dengan SPMB)",
+      "done": false,
+      "created_at": "2026-06-30T08:30:00Z"
+    },
+    {
+      "id": "t32",
+      "member_name": "Tasya",
+      "body": "Merespons setiap pertanyaan yang masuk ke WhatsApp dan email Customer Service.",
+      "done": false,
+      "created_at": "2026-06-30T08:31:00Z"
+    },
+    {
+      "id": "t33",
+      "member_name": "Tasya",
+      "body": "Mengirimkan blast WhatsApp rekaman dan materi webinar Parents Academy: Supporting Your Child's Path to University.",
+      "done": false,
+      "created_at": "2026-06-30T08:32:00Z"
+    },
+    {
+      "id": "t34",
+      "member_name": "Tasya",
+      "body": "Menyusun Terms of Reference (TOR) untuk kegiatan bersama 20 Universitas Terbaik di Indonesia dan Boarding Life Training.",
+      "done": false,
+      "created_at": "2026-06-30T08:33:00Z"
+    },
+    {
+      "id": "t35",
+      "member_name": "Tasya",
+      "body": "Membuat database nomor telepon calon pendaftar yang berminat mengikuti SPMB SMA KTB untuk keperluan blast promosi NST.",
+      "done": false,
+      "created_at": "2026-06-30T08:34:00Z"
+    },
+    {
+      "id": "t36",
+      "member_name": "Tasya",
+      "body": "Mencari ide konten promosi NST.",
+      "done": false,
+      "created_at": "2026-06-30T08:35:00Z"
+    }
   ],
   "comments": []
 }
