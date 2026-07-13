@@ -194,7 +194,8 @@ h1 { font-size: clamp(26px, 3.4vw, 34px); font-weight: 800; margin: 2px 0 0; tex
 .task-text { font-size: 14px; color: var(--text); cursor: pointer; flex: 1; }
 .task-item.done .task-text { text-decoration: line-through; color: var(--text-muted); opacity: 0.75; }
 
-.task-meta { display: flex; align-items: center; gap: 10px; margin-top: 2px; flex-shrink: 0; }
+.task-meta { display: flex; align-items: center; gap: 6px; margin-top: 2px; flex-shrink: 0; }
+.task-meta .progress-badge { font-size: 10px; padding: 1px 8px; }
 .comment-toggle {
   display: inline-flex; align-items: center; gap: 4px; background: none; border: none;
   color: var(--text-muted); font-size: 12px; padding: 2px 4px; border-radius: 6px;

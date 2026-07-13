@@ -143,14 +143,11 @@ function buildGrid() {
 
     const head = document.createElement("div");
     head.className = "card-head";
-    const progressBadge = member.progress
-      ? `<span class="progress-badge ${progressClass(member.progress)}">${escapeHtml(member.progress)}</span>`
-      : "";
     head.innerHTML = `
       <div class="card-head-top">
         <div class="avatar">${initials(member.name)}</div>
         <div>
-          <div class="card-name">${member.name}${progressBadge}</div>
+          <div class="card-name">${member.name}</div>
           <div class="card-count">${doneCount} dari ${tasks.length} selesai</div>
         </div>
       </div>
@@ -257,6 +254,12 @@ function buildTaskItem(member, task) {
     }
   });
 
+  if (task.progress) {
+    const badge = document.createElement("span");
+    badge.className = "progress-badge " + progressClass(task.progress);
+    badge.textContent = task.progress;
+    meta.appendChild(badge);
+  }
   meta.appendChild(commentBtn);
   meta.appendChild(deleteBtn);
 

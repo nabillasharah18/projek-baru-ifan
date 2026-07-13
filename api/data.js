@@ -83,33 +83,40 @@ async function fetchSheet() {
   const members = [];
   const tasks = [];
   let colorIdx = 0;
+  let currentMember = null;
+
+  function cleanText(s) {
+    return s.replace(/[⁠​‌‍﻿]/g, "").replace(/^[•\-\*·]\s*/, "").trim();
+  }
 
   for (let i = 1; i < rows.length; i++) {
-    const name = (rows[i][0] || "").trim();
-    const pekerjaan = (rows[i][1] || "").trim();
-    const progress = (rows[i][2] || "").trim();
-    if (!name) continue;
+    const rawName = (rows[i][0] || "").trim();
+    const rawBody = (rows[i][1] || "").trim();
+    const rawProgress = (rows[i][2] || "").trim();
 
-    const accent =
-      ACCENT_MAP[name] || ACCENT_CYCLE[colorIdx++ % ACCENT_CYCLE.length];
-    members.push({ name, accent, progress: progress || null });
-
-    if (pekerjaan) {
-      pekerjaan
-        .split("\n")
-        .map((l) => l.replace(/[⁠​‌‍﻿]/g, "").replace(/^[•\-\*·]\s*/, "").trim())
-        .filter((l) => l.length > 0)
-        .forEach((body) => {
-          tasks.push({
-            id: stableId(name, body),
-            member_name: name,
-            body,
-            done: false,
-            created_at: new Date("2026-06-30T08:00:00Z").toISOString(),
-            from_sheet: true,
-          });
-        });
+    if (rawName) {
+      const accent =
+        ACCENT_MAP[rawName] || ACCENT_CYCLE[colorIdx++ % ACCENT_CYCLE.length];
+      currentMember = { name: rawName, accent };
+      members.push(currentMember);
     }
+
+    if (!currentMember || !rawBody) continue;
+
+    const stripped = rawBody.replace(/[⁠​‌‍﻿]/g, "");
+    const lines = stripped.split("\n").map((l) => l.replace(/^[•\-\*·]\s*/, "").trim()).filter((l) => l.length > 0);
+
+    lines.forEach((body) => {
+      tasks.push({
+        id: stableId(currentMember.name, body),
+        member_name: currentMember.name,
+        body,
+        done: false,
+        created_at: new Date("2026-06-30T08:00:00Z").toISOString(),
+        from_sheet: true,
+        progress: rawProgress || null,
+      });
+    });
   }
   return { members, tasks };
 }
