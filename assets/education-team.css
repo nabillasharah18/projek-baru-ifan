@@ -189,18 +189,41 @@ h1 { font-size: clamp(26px, 3.4vw, 34px); font-weight: 800; margin: 2px 0 0; tex
 }
 .comment-panel.open { display: flex; }
 .comment-list { display: flex; flex-direction: column; gap: 8px; }
-.comment-item { font-size: 13px; }
+.comment-item { font-size: 13px; padding: 6px 0; }
 .comment-header-row { display: flex; align-items: center; justify-content: space-between; }
 .comment-item .comment-author { font-weight: 700; color: var(--text); }
 .comment-item .comment-time { color: var(--text-muted); font-size: 11px; margin-left: 6px; }
-.comment-item .comment-body { color: var(--text); margin-top: 1px; white-space: pre-wrap; }
-.comment-delete {
-  background: none; border: none; color: var(--text-muted); font-size: 16px; line-height: 1;
-  padding: 2px 6px; border-radius: 6px; opacity: 0; cursor: pointer;
+.comment-item .comment-body { color: var(--text); margin-top: 2px; white-space: pre-wrap; }
+.comment-original {
+  margin-top: 2px; padding: 4px 8px; border-left: 3px solid var(--border);
+  color: var(--text-muted); font-size: 12px; font-style: italic;
+  text-decoration: line-through; white-space: pre-wrap;
+}
+.comment-actions { display: flex; gap: 2px; }
+.comment-action-btn {
+  background: none; border: none; color: var(--text-muted); padding: 2px 5px;
+  border-radius: 6px; opacity: 0; cursor: pointer; font-size: 14px; line-height: 1;
   transition: opacity 0.1s ease;
 }
-.comment-item:hover .comment-delete { opacity: 0.6; }
-.comment-delete:hover { opacity: 1 !important; color: var(--danger); background: var(--surface); }
+.comment-item:hover .comment-action-btn { opacity: 0.55; }
+.comment-action-btn:hover { opacity: 1 !important; background: var(--surface); }
+.comment-action-delete:hover { color: var(--danger); }
+.comment-edit-area {
+  display: flex; gap: 6px; margin-top: 4px; align-items: center;
+}
+.comment-edit-input {
+  flex: 1; border: 1px solid var(--primary); background: var(--surface); color: var(--text);
+  border-radius: 8px; padding: 5px 8px; font-size: 12.5px;
+}
+.comment-edit-save {
+  border: none; background: var(--primary); color: #fff; border-radius: 8px;
+  padding: 5px 12px; font-size: 12.5px; font-weight: 600; white-space: nowrap;
+}
+.comment-edit-save:disabled { opacity: 0.5; }
+.comment-edit-cancel {
+  border: 1px solid var(--border); background: var(--surface); color: var(--text-muted);
+  border-radius: 8px; padding: 5px 10px; font-size: 12.5px; white-space: nowrap;
+}
 .comment-empty { color: var(--text-muted); font-size: 12.5px; font-style: italic; }
 
 .comment-form { display: flex; flex-direction: column; gap: 6px; }

@@ -138,6 +138,19 @@ module.exports = async function handler(req, res) {
         return res.status(200).json({ ok: true, comment });
       }
 
+      if (action === "edit_comment") {
+        await readModifyWrite((data) => {
+          const comment = data.comments.find((c) => c.id === params.id);
+          if (!comment) throw new Error("Komentar tidak ditemukan");
+          if (!comment.original_body) {
+            comment.original_body = comment.body;
+          }
+          comment.body = params.body;
+          comment.edited_at = new Date().toISOString();
+        }, `[dashboard] Edit komentar`);
+        return res.status(200).json({ ok: true });
+      }
+
       if (action === "delete_comment") {
         await readModifyWrite((data) => {
           const idx = data.comments.findIndex((c) => c.id === params.id);

@@ -273,12 +273,34 @@ function buildTaskItem(member, task) {
     comments.forEach((c) => {
       const item = document.createElement("div");
       item.className = "comment-item";
+
       const headerRow = document.createElement("div");
       headerRow.className = "comment-header-row";
-      headerRow.innerHTML = `<span><span class="comment-author">${escapeHtml(c.author_name)}</span><span class="comment-time">${formatTime(c.created_at)}</span></span>`;
+      const headerLeft = document.createElement("span");
+      headerLeft.innerHTML = `<span class="comment-author">${escapeHtml(c.author_name)}</span><span class="comment-time">${formatTime(c.created_at)}${c.edited_at ? " (diedit)" : ""}</span>`;
+      headerRow.appendChild(headerLeft);
+
+      const actions = document.createElement("span");
+      actions.className = "comment-actions";
+
+      const editBtn = document.createElement("button");
+      editBtn.type = "button";
+      editBtn.className = "comment-action-btn";
+      editBtn.title = "Edit komentar";
+      editBtn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 3a2.83 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>`;
+      editBtn.addEventListener("click", () => {
+        if (editArea.style.display === "flex") {
+          editArea.style.display = "none";
+          return;
+        }
+        editInput.value = c.body;
+        editArea.style.display = "flex";
+        editInput.focus();
+      });
+
       const delBtn = document.createElement("button");
       delBtn.type = "button";
-      delBtn.className = "comment-delete";
+      delBtn.className = "comment-action-btn comment-action-delete";
       delBtn.title = "Hapus komentar";
       delBtn.innerHTML = "&times;";
       delBtn.addEventListener("click", async () => {
@@ -291,12 +313,61 @@ function buildTaskItem(member, task) {
           alert("Gagal menghapus komentar: " + err.message);
         }
       });
-      headerRow.appendChild(delBtn);
+
+      actions.appendChild(editBtn);
+      actions.appendChild(delBtn);
+      headerRow.appendChild(actions);
       item.appendChild(headerRow);
+
+      if (c.original_body) {
+        const originalDiv = document.createElement("div");
+        originalDiv.className = "comment-original";
+        originalDiv.textContent = c.original_body;
+        item.appendChild(originalDiv);
+      }
+
       const bodyDiv = document.createElement("div");
       bodyDiv.className = "comment-body";
       bodyDiv.textContent = c.body;
       item.appendChild(bodyDiv);
+
+      const editArea = document.createElement("div");
+      editArea.className = "comment-edit-area";
+      editArea.style.display = "none";
+      const editInput = document.createElement("input");
+      editInput.type = "text";
+      editInput.className = "comment-edit-input";
+      editInput.maxLength = 500;
+      const saveBtn = document.createElement("button");
+      saveBtn.type = "button";
+      saveBtn.className = "comment-edit-save";
+      saveBtn.textContent = "Simpan";
+      saveBtn.addEventListener("click", async () => {
+        const newBody = editInput.value.trim();
+        if (!newBody || newBody === c.body) { editArea.style.display = "none"; return; }
+        saveBtn.disabled = true;
+        saveBtn.textContent = "Menyimpan…";
+        try {
+          await apiAction({ action: "edit_comment", id: c.id, body: newBody });
+          openPanels.add(task.id);
+          const res = await fetch(API);
+          if (res.ok) applyData(await res.json());
+        } catch (err) {
+          alert("Gagal mengedit: " + err.message);
+        }
+        saveBtn.disabled = false;
+        saveBtn.textContent = "Simpan";
+      });
+      const cancelBtn = document.createElement("button");
+      cancelBtn.type = "button";
+      cancelBtn.className = "comment-edit-cancel";
+      cancelBtn.textContent = "Batal";
+      cancelBtn.addEventListener("click", () => { editArea.style.display = "none"; });
+      editArea.appendChild(editInput);
+      editArea.appendChild(saveBtn);
+      editArea.appendChild(cancelBtn);
+      item.appendChild(editArea);
+
       commentList.appendChild(item);
     });
   }
