@@ -293,6 +293,13 @@
       "author_name": "Sharah",
       "body": "Test komentar kedua ini mau melihat sejauh mana bisa kasih komen.",
       "created_at": "2026-07-13T05:26:42.104Z"
+    },
+    {
+      "id": "cmris79xkcnwp",
+      "task_id": "t01",
+      "author_name": "Syika",
+      "body": "Ini Syika kasih komen",
+      "created_at": "2026-07-13T05:28:13.065Z"
     }
   ]
 }
