@@ -279,5 +279,13 @@
       "created_at": "2026-06-30T08:35:00Z"
     }
   ],
-  "comments": []
+  "comments": [
+    {
+      "id": "cmris4m0b2adh",
+      "task_id": "t01",
+      "author_name": "Sharah",
+      "body": "Halo test",
+      "created_at": "2026-07-13T05:26:08.747Z"
+    }
+  ]
 }
