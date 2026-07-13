@@ -1,3 +1,5 @@
+const crypto = require("crypto");
+
 const REPO = process.env.GITHUB_REPO || "nabillasharah18/projek-baru-ifan";
 const TOKEN = process.env.GITHUB_TOKEN;
 const FILE_PATH = "data/education-team.json";
@@ -213,6 +215,22 @@ module.exports = async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   if (req.method === "OPTIONS") return res.status(204).end();
+
+  const DASH_PW = process.env.DASHBOARD_PASSWORD;
+  if (DASH_PW) {
+    const cookies = {};
+    (req.headers.cookie || "").split(";").forEach((c) => {
+      const [n, ...r] = c.trim().split("=");
+      if (n) cookies[n.trim()] = r.join("=").trim();
+    });
+    const expected = crypto
+      .createHmac("sha256", "dashboard-session-salt-2026")
+      .update(DASH_PW)
+      .digest("hex");
+    if (cookies["dashboard_session"] !== expected) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+  }
 
   if (!TOKEN) {
     return res

@@ -26,8 +26,93 @@ let searchTerm = "";
 const openPanels = new Set();
 let pollTimer = null;
 
-setBanner("loading", "Menghubungkan ke GitHub…");
-loadData();
+checkAuth();
+
+async function checkAuth() {
+  try {
+    const res = await fetch("/api/auth");
+    const data = await res.json();
+    if (data.authenticated) {
+      setBanner("loading", "Menghubungkan ke GitHub…");
+      loadData();
+      addLogoutBtn();
+    } else {
+      showLogin();
+    }
+  } catch (_) {
+    setBanner("loading", "Menghubungkan ke GitHub…");
+    loadData();
+  }
+}
+
+function showLogin() {
+  els.banner.style.display = "none";
+  els.app.style.display = "none";
+  const overlay = document.createElement("div");
+  overlay.className = "login-overlay";
+  overlay.innerHTML = `
+    <div class="login-card">
+      <svg class="login-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <h2 class="heading-font">Dashboard Terkunci</h2>
+      <p>Masukkan password untuk mengakses dashboard.</p>
+      <form class="login-form">
+        <input type="password" class="login-input" placeholder="Password" autocomplete="current-password" />
+        <button type="submit" class="login-btn heading-font">Masuk</button>
+      </form>
+      <div class="login-error" style="display:none"></div>
+    </div>
+  `;
+  document.querySelector(".wrap").prepend(overlay);
+  const form = overlay.querySelector(".login-form");
+  const input = overlay.querySelector(".login-input");
+  const btn = overlay.querySelector(".login-btn");
+  const errorEl = overlay.querySelector(".login-error");
+  input.focus();
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const password = input.value.trim();
+    if (!password) return;
+    btn.disabled = true;
+    btn.textContent = "Memverifikasi…";
+    errorEl.style.display = "none";
+    try {
+      const res = await fetch("/api/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password }),
+      });
+      const data = await res.json();
+      if (res.ok && data.ok) {
+        window.location.reload();
+      } else {
+        errorEl.textContent = data.error || "Password salah";
+        errorEl.style.display = "block";
+        input.value = "";
+        input.focus();
+      }
+    } catch (_) {
+      errorEl.textContent = "Gagal terhubung ke server";
+      errorEl.style.display = "block";
+    }
+    btn.disabled = false;
+    btn.textContent = "Masuk";
+  });
+}
+
+function addLogoutBtn() {
+  const btn = document.createElement("button");
+  btn.className = "logout-btn";
+  btn.textContent = "Logout";
+  btn.addEventListener("click", async () => {
+    await fetch("/api/auth", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "logout" }),
+    });
+    window.location.reload();
+  });
+  document.querySelector(".page-header").appendChild(btn);
+}
 
 async function loadData() {
   try {

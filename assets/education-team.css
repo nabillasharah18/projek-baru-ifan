@@ -342,4 +342,46 @@ h1 { font-size: clamp(26px, 3.4vw, 34px); font-weight: 800; margin: 2px 0 0; tex
 .setup-card code { background: var(--surface-2); padding: 2px 6px; border-radius: 6px; font-size: 13px; }
 .setup-card li { margin-bottom: 8px; }
 
+.login-overlay {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 70vh;
+}
+.login-card {
+  max-width: 380px; width: 100%; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 18px; padding: 40px 32px; box-shadow: var(--shadow); text-align: center;
+}
+.login-icon {
+  width: 48px; height: 48px; color: var(--primary); margin: 0 auto 16px;
+}
+.login-card h2 { font-size: 22px; font-weight: 800; margin: 0 0 8px; }
+.login-card p { color: var(--text-muted); font-size: 14px; margin: 0 0 24px; }
+.login-form { display: flex; flex-direction: column; gap: 12px; }
+.login-input {
+  width: 100%; padding: 12px 16px; border: 1px solid var(--border); border-radius: 12px;
+  background: var(--surface-2); color: var(--text); font-size: 15px; text-align: center;
+}
+.login-input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px var(--ring); }
+.login-btn {
+  padding: 12px; border: none; border-radius: 12px; background: var(--primary);
+  color: #fff; font-size: 15px; font-weight: 700; cursor: pointer;
+}
+.login-btn:disabled { opacity: 0.5; cursor: default; }
+.login-btn:hover:not(:disabled) { background: var(--primary-strong); }
+.login-error {
+  margin-top: 12px; padding: 8px 12px; border-radius: 10px;
+  background: #f8d7da; color: #842029; font-size: 13px;
+}
+@media (prefers-color-scheme: dark) {
+  .login-error { background: #3a2225; color: #f3a9b0; }
+}
+:root[data-theme="dark"] .login-error { background: #3a2225; color: #f3a9b0; }
+
+.logout-btn {
+  position: absolute; top: 0; right: 0;
+  background: none; border: 1px solid var(--border); color: var(--text-muted);
+  border-radius: 8px; padding: 4px 12px; font-size: 12px; cursor: pointer;
+}
+.logout-btn:hover { background: var(--surface-2); color: var(--text); }
+header.page-header { position: relative; }
+
 footer.page-footer { margin-top: 40px; color: var(--text-muted); font-size: 12.5px; text-align: center; }
