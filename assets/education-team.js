@@ -547,7 +547,7 @@ els.search.addEventListener("input", (e) => {
 function progressClass(text) {
   const t = text.toLowerCase();
   if (t.includes("selesai") || t.includes("done") || t.includes("complete")) return "progress-done";
-  if (t.includes("proses") || t.includes("progress") || t.includes("ongoing") || t.includes("berjalan")) return "progress-ongoing";
+  if (t.includes("proses") || t.includes("progress") || t.includes("on going") || t.includes("ongoing") || t.includes("berjalan")) return "progress-ongoing";
   if (t.includes("belum") || t.includes("not") || t.includes("pending") || t.includes("tunggu")) return "progress-pending";
   return "progress-default";
 }
