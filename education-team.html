@@ -56,20 +56,21 @@
     </div>
 
     <div id="setup" class="setup-card" style="display:none">
-      <h2 class="heading-font">Setup Supabase diperlukan</h2>
-      <p>Dashboard ini butuh database Supabase supaya tugas &amp; komentar tersimpan bersama untuk semua anggota tim. Langkah:</p>
+      <h2 class="heading-font">Setup GitHub Token diperlukan</h2>
+      <p>Dashboard ini menyimpan data tugas &amp; komentar ke file JSON di repo GitHub lewat Vercel serverless function. Langkah:</p>
       <ol>
-        <li>Buat project gratis di <code>supabase.com</code>.</li>
-        <li>Buka <strong>SQL Editor</strong>, jalankan isi file <code>supabase/schema.sql</code> dari repo ini.</li>
-        <li>Buka <strong>Project Settings → API</strong>, salin <code>Project URL</code> dan <code>anon public key</code>.</li>
-        <li>Isi kedua nilai itu ke file <code>supabase-config.js</code> di root repo.</li>
-        <li>Commit &amp; push — Vercel akan otomatis deploy ulang.</li>
+        <li>Buka <strong>github.com → Settings → Developer settings → Personal access tokens → Fine-grained tokens</strong>.</li>
+        <li>Klik <strong>Generate new token</strong>. Pilih repo <code>projek-baru-ifan</code>, beri permission <strong>Contents: Read and write</strong>.</li>
+        <li>Salin token yang dihasilkan.</li>
+        <li>Buka <strong>Vercel dashboard → project ini → Settings → Environment Variables</strong>.</li>
+        <li>Tambah variable: <code>GITHUB_TOKEN</code> = token yang tadi disalin.</li>
+        <li>Klik <strong>Redeploy</strong> dari tab Deployments supaya environment variable terbaca.</li>
       </ol>
     </div>
 
     <footer class="page-footer">Dashboard Tim Education · Yayasan Pendidikan Kader Bangsa Indonesia</footer>
   </div>
 
-  <script type="module" src="assets/education-team.js"></script>
+  <script src="assets/education-team.js"></script>
 </body>
 </html>
