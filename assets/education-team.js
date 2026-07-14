@@ -156,17 +156,27 @@ function applyData(data) {
   render();
 }
 
+function isUserTyping() {
+  const inputs = els.grid.querySelectorAll("input[type='text'], input[type='password'], textarea");
+  for (const inp of inputs) {
+    if (inp.value.trim()) return true;
+  }
+  const active = document.activeElement;
+  if (active && active.closest && (active.closest(".comment-form") || active.closest(".task-edit-area") || active.closest(".add-task-form"))) {
+    return true;
+  }
+  return false;
+}
+
 function startPolling() {
   if (pollTimer) clearInterval(pollTimer);
   pollTimer = setInterval(async () => {
     try {
-      const active = document.activeElement;
-      if (active && (active.closest(".comment-form") || active.closest(".task-edit-area") || active.closest(".add-task-form"))) {
-        return;
-      }
+      if (isUserTyping()) return;
       const res = await fetch(API);
       if (!res.ok) return;
       const data = await res.json();
+      if (isUserTyping()) return;
       applyData(data);
     } catch (_) {}
   }, POLL_INTERVAL);
