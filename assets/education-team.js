@@ -160,6 +160,10 @@ function startPolling() {
   if (pollTimer) clearInterval(pollTimer);
   pollTimer = setInterval(async () => {
     try {
+      const active = document.activeElement;
+      if (active && (active.closest(".comment-form") || active.closest(".task-edit-area") || active.closest(".add-task-form"))) {
+        return;
+      }
       const res = await fetch(API);
       if (!res.ok) return;
       const data = await res.json();
