@@ -157,12 +157,12 @@ function applyData(data) {
 }
 
 function isUserTyping() {
-  const inputs = els.grid.querySelectorAll("input[type='text'], input[type='password'], textarea");
+  const inputs = els.grid.querySelectorAll("input[type='text'], input[type='password'], input[type='url'], textarea");
   for (const inp of inputs) {
     if (inp.value.trim()) return true;
   }
   const active = document.activeElement;
-  if (active && active.closest && (active.closest(".comment-form") || active.closest(".task-edit-area") || active.closest(".add-task-form"))) {
+  if (active && active.closest && (active.closest(".comment-form") || active.closest(".task-edit-area") || active.closest(".task-link-area") || active.closest(".add-task-form"))) {
     return true;
   }
   return false;
@@ -378,6 +378,14 @@ function buildTaskItem(member, task) {
   });
   meta.appendChild(progressSelect);
 
+  const linkBtn = document.createElement("button");
+  linkBtn.type = "button";
+  linkBtn.className = "task-link-btn";
+  linkBtn.title = task.link ? "Edit link" : "Tambah link";
+  linkBtn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>`;
+  if (task.link) linkBtn.classList.add("has-link");
+  meta.appendChild(linkBtn);
+
   const editBtn = document.createElement("button");
   editBtn.type = "button";
   editBtn.className = "task-edit-btn";
@@ -443,6 +451,79 @@ function buildTaskItem(member, task) {
   editArea.appendChild(saveEditBtn);
   editArea.appendChild(cancelEditBtn);
   li.appendChild(editArea);
+
+  if (task.link) {
+    const linkRow = document.createElement("a");
+    linkRow.className = "task-link-display";
+    linkRow.href = task.link;
+    linkRow.target = "_blank";
+    linkRow.rel = "noopener";
+    linkRow.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> ${escapeHtml(task.link)}`;
+    li.appendChild(linkRow);
+  }
+
+  const linkArea = document.createElement("div");
+  linkArea.className = "task-link-area";
+  linkArea.style.display = "none";
+  const linkInput = document.createElement("input");
+  linkInput.type = "url";
+  linkInput.className = "task-link-input";
+  linkInput.value = task.link || "";
+  linkInput.placeholder = "Paste URL dokumen…";
+  const saveLinkBtn = document.createElement("button");
+  saveLinkBtn.type = "button";
+  saveLinkBtn.className = "task-edit-save";
+  saveLinkBtn.textContent = "Simpan";
+  const cancelLinkBtn = document.createElement("button");
+  cancelLinkBtn.type = "button";
+  cancelLinkBtn.className = "task-edit-cancel";
+  cancelLinkBtn.textContent = "Batal";
+  const removeLinkBtn = document.createElement("button");
+  removeLinkBtn.type = "button";
+  removeLinkBtn.className = "task-link-remove";
+  removeLinkBtn.textContent = "Hapus";
+  removeLinkBtn.style.display = task.link ? "" : "none";
+
+  linkBtn.addEventListener("click", () => {
+    const show = linkArea.style.display === "none";
+    linkArea.style.display = show ? "flex" : "none";
+    if (show) { linkInput.value = task.link || ""; linkInput.focus(); }
+  });
+  cancelLinkBtn.addEventListener("click", () => { linkArea.style.display = "none"; });
+  saveLinkBtn.addEventListener("click", async () => {
+    const url = linkInput.value.trim();
+    if (!url) { linkArea.style.display = "none"; return; }
+    saveLinkBtn.disabled = true;
+    saveLinkBtn.textContent = "Menyimpan…";
+    try {
+      await apiAction({ action: "set_link", id: task.id, link: url });
+      linkArea.style.display = "none";
+      const res = await fetch(API);
+      if (res.ok) applyData(await res.json());
+    } catch (err) {
+      alert("Gagal menyimpan link: " + err.message);
+    }
+    saveLinkBtn.disabled = false;
+    saveLinkBtn.textContent = "Simpan";
+  });
+  removeLinkBtn.addEventListener("click", async () => {
+    removeLinkBtn.disabled = true;
+    try {
+      await apiAction({ action: "set_link", id: task.id, link: "" });
+      linkArea.style.display = "none";
+      const res = await fetch(API);
+      if (res.ok) applyData(await res.json());
+    } catch (err) {
+      alert("Gagal menghapus link: " + err.message);
+    }
+    removeLinkBtn.disabled = false;
+  });
+
+  linkArea.appendChild(linkInput);
+  linkArea.appendChild(saveLinkBtn);
+  linkArea.appendChild(removeLinkBtn);
+  linkArea.appendChild(cancelLinkBtn);
+  li.appendChild(linkArea);
 
   const panel = document.createElement("div");
   panel.className = "comment-panel" + (openPanels.has(task.id) ? " open" : "");

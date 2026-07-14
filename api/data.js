@@ -188,12 +188,14 @@ function mergeData(sheet, state) {
   const comments = state.comments || [];
   const taskEdits = state.task_edits || {};
   const taskProgress = state.task_progress || {};
+  const taskLinks = state.task_links || {};
 
   const tasks = sheet.tasks
     .filter((t) => !hiddenTasks.has(t.id))
     .map((t) => {
       const edit = taskEdits[t.id];
       const prog = taskProgress[t.id];
+      const link = taskLinks[t.id];
       return {
         ...t,
         done: doneTasks.has(t.id),
@@ -201,6 +203,7 @@ function mergeData(sheet, state) {
           ? { body: edit.body, original_body: edit.original_body, edited_at: edit.edited_at }
           : {}),
         ...(prog !== undefined ? { progress: prog } : {}),
+        ...(link ? { link } : {}),
       };
     });
 
@@ -354,6 +357,23 @@ module.exports = async function handler(req, res) {
             delete data.task_progress[params.id];
           }
         }, `[dashboard] Update progress`);
+        return res.status(200).json({ ok: true });
+      }
+
+      if (action === "set_link") {
+        await readModifyWrite((data) => {
+          const local = (data.local_tasks || []).find((t) => t.id === params.id);
+          if (local) {
+            local.link = params.link || null;
+            return;
+          }
+          if (!data.task_links) data.task_links = {};
+          if (params.link) {
+            data.task_links[params.id] = params.link;
+          } else {
+            delete data.task_links[params.id];
+          }
+        }, `[dashboard] Set link`);
         return res.status(200).json({ ok: true });
       }
 

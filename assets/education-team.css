@@ -238,6 +238,37 @@ h1 { font-size: clamp(26px, 3.4vw, 34px); font-weight: 800; margin: 2px 0 0; tex
   border-radius: 8px; padding: 5px 10px; font-size: 12.5px; white-space: nowrap;
 }
 
+.task-link-btn {
+  background: none; border: none; color: var(--text-muted); opacity: 0; padding: 2px 4px; border-radius: 6px;
+  transition: opacity 0.1s ease;
+}
+.task-row:hover .task-link-btn { opacity: 0.6; }
+.task-link-btn:hover { opacity: 1 !important; color: var(--primary); background: var(--surface-2); }
+.task-link-btn.has-link { opacity: 0.7; color: var(--primary); }
+.task-link-btn.has-link:hover { opacity: 1; }
+
+.task-link-display {
+  display: flex; align-items: center; gap: 5px;
+  margin: 0 6px 4px 34px; padding: 3px 8px;
+  font-size: 12px; color: var(--primary); text-decoration: none;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.task-link-display:hover { text-decoration: underline; color: var(--primary-strong); }
+.task-link-display svg { flex-shrink: 0; opacity: 0.6; }
+
+.task-link-area {
+  display: flex; gap: 6px; margin: 2px 6px 6px 34px; align-items: center;
+}
+.task-link-input {
+  flex: 1; border: 1px solid var(--primary); background: var(--surface); color: var(--text);
+  border-radius: 8px; padding: 5px 8px; font-size: 13px; min-width: 0;
+}
+.task-link-remove {
+  border: 1px solid var(--danger); background: none; color: var(--danger);
+  border-radius: 8px; padding: 5px 10px; font-size: 12.5px; white-space: nowrap;
+}
+.task-link-remove:disabled { opacity: 0.5; }
+
 .progress-select {
   font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 999px;
   letter-spacing: 0.02em; white-space: nowrap; cursor: pointer;
