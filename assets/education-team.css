@@ -85,7 +85,7 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
   outline-offset: 2px;
 }
 
-.wrap { max-width: 1180px; margin: 0 auto; padding: 40px 24px 72px; }
+.wrap { max-width: 1320px; margin: 0 auto; padding: 40px 24px 72px; }
 
 header.page-header { display: flex; flex-direction: column; gap: 6px; margin-bottom: 32px; }
 .eyebrow { font-size: 12.5px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--primary); }
@@ -130,27 +130,54 @@ h1 { font-size: clamp(26px, 3.4vw, 34px); font-weight: 800; margin: 2px 0 0; tex
 .chip.active { background: var(--dot, var(--primary)); border-color: var(--dot, var(--primary)); color: #201a2b; }
 .chip.all.active { color: #fff; background: var(--primary); border-color: var(--primary); }
 
-.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-@media (max-width: 920px) { .grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 620px) { .grid { grid-template-columns: 1fr; } }
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+@media (max-width: 920px) { .grid { grid-template-columns: 1fr; } }
+
+.kanban-col {
+  display: flex; flex-direction: column; min-height: 200px;
+}
+.kanban-header {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 14px; margin-bottom: 10px;
+  border-radius: 12px; font-weight: 700; font-size: 13.5px;
+  font-family: ui-rounded, "SF Pro Rounded", "Segoe UI Rounded", "Nunito", -apple-system, sans-serif;
+  letter-spacing: 0.01em;
+}
+.kanban-header .kanban-count {
+  font-size: 11px; font-weight: 600; opacity: 0.75;
+  background: rgba(0,0,0,0.1); border-radius: 999px; padding: 1px 8px;
+  font-variant-numeric: tabular-nums;
+}
+.kanban-col[data-status="pending"] .kanban-header { background: #f8d7da; color: #842029; }
+.kanban-col[data-status="ongoing"] .kanban-header { background: #fef9c3; color: #854d0e; }
+.kanban-col[data-status="done"] .kanban-header { background: #d4edda; color: #1b5e2e; }
+@media (prefers-color-scheme: dark) {
+  .kanban-col[data-status="pending"] .kanban-header { background: #3a2225; color: #f3a9b0; }
+  .kanban-col[data-status="ongoing"] .kanban-header { background: #3a3220; color: #e8cb6e; }
+  .kanban-col[data-status="done"] .kanban-header { background: #1e3a28; color: #7ed4ae; }
+  .kanban-header .kanban-count { background: rgba(255,255,255,0.15); }
+}
+:root[data-theme="dark"] .kanban-col[data-status="pending"] .kanban-header { background: #3a2225; color: #f3a9b0; }
+:root[data-theme="dark"] .kanban-col[data-status="ongoing"] .kanban-header { background: #3a3220; color: #e8cb6e; }
+:root[data-theme="dark"] .kanban-col[data-status="done"] .kanban-header { background: #1e3a28; color: #7ed4ae; }
+:root[data-theme="dark"] .kanban-header .kanban-count { background: rgba(255,255,255,0.15); }
 
 .card {
-  background: var(--surface); border: 1px solid var(--border); border-radius: 18px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
   overflow: hidden; box-shadow: var(--shadow); display: flex; flex-direction: column;
-  transition: box-shadow 0.16s ease;
+  transition: box-shadow 0.16s ease; margin-bottom: 8px;
 }
 .card:hover { box-shadow: 0 2px 4px rgba(40,30,20,0.06), 0 18px 34px -14px rgba(40,30,20,0.22); }
 
-.card-head { background: var(--card-bg); color: var(--card-fg); padding: 18px 18px 16px; }
-.card-head-top { display: flex; align-items: center; gap: 12px; }
-.avatar {
-  width: 40px; height: 40px; border-radius: 50%; background: var(--card-fg); color: var(--card-bg);
-  display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 15px;
-  font-family: ui-rounded, "SF Pro Rounded", "Segoe UI Rounded", "Nunito", -apple-system, sans-serif;
-  flex-shrink: 0;
+.task-member-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 700; color: var(--text-muted);
+  padding: 2px 0 0 6px;
 }
-.card-name { font-family: ui-rounded, "SF Pro Rounded", "Segoe UI Rounded", "Nunito", -apple-system, sans-serif; font-weight: 800; font-size: 18px; letter-spacing: -0.01em; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.card-count { font-size: 12.5px; opacity: 0.85; font-variant-numeric: tabular-nums; }
+.task-member-badge .member-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--member-color, var(--primary));
+}
 
 .progress-badge {
   font-size: 11px; font-weight: 700; padding: 2px 10px; border-radius: 999px;
@@ -349,14 +376,18 @@ h1 { font-size: clamp(26px, 3.4vw, 34px); font-weight: 800; margin: 2px 0 0; tex
 }
 .comment-form button:disabled { opacity: 0.5; cursor: default; }
 
-.add-task-row { padding: 8px 16px 16px; border-top: 1px dashed var(--border); margin-top: 4px; }
-.add-task-form { display: flex; gap: 6px; }
+.add-task-row { padding: 10px 0 0; margin-top: 4px; }
+.add-task-form { display: flex; gap: 6px; flex-wrap: wrap; }
+.add-task-form select {
+  border: 1px solid var(--border); background: var(--surface); color: var(--text);
+  border-radius: 8px; padding: 7px 8px; font-size: 12.5px; max-width: 110px;
+}
 .add-task-form input {
   flex: 1; border: 1px solid var(--border); background: var(--surface); color: var(--text);
-  border-radius: 8px; padding: 7px 10px; font-size: 13.5px;
+  border-radius: 8px; padding: 7px 10px; font-size: 13.5px; min-width: 0;
 }
 .add-task-form button {
-  border: none; background: var(--card-fg, var(--primary)); color: var(--card-bg, #fff);
+  border: none; background: var(--primary); color: #fff;
   border-radius: 8px; padding: 0 14px; font-size: 13.5px; font-weight: 700;
 }
 .add-task-form button:disabled { opacity: 0.5; cursor: default; }

@@ -19,6 +19,7 @@ const els = {
 const EXTRA_COMMENTERS = [];
 
 let members = [];
+let allTasks = [];
 let tasksByMember = new Map();
 let commentsByTask = new Map();
 let activeMember = "all";
@@ -139,8 +140,9 @@ async function loadData() {
 
 function applyData(data) {
   members = data.members || [];
+  allTasks = data.tasks || [];
   tasksByMember = new Map(members.map((m) => [m.name, []]));
-  (data.tasks || []).forEach((t) => {
+  allTasks.forEach((t) => {
     if (!tasksByMember.has(t.member_name)) tasksByMember.set(t.member_name, []);
     tasksByMember.get(t.member_name).push(t);
   });
@@ -230,66 +232,93 @@ function setActiveMember(name) {
 
 function buildGrid() {
   els.grid.innerHTML = "";
-  members.forEach((member) => {
-    const tasks = tasksByMember.get(member.name) || [];
-    const doneCount = tasks.filter((t) => t.done).length;
 
-    const card = document.createElement("article");
-    card.className = "card";
-    card.dataset.member = member.name;
-    card.style.setProperty("--card-bg", `var(--${member.accent}-bg)`);
-    card.style.setProperty("--card-fg", `var(--${member.accent}-fg)`);
+  const columns = [
+    { key: "pending", label: "Belum Mulai" },
+    { key: "ongoing", label: "On Going" },
+    { key: "done", label: "Selesai" },
+  ];
 
-    const head = document.createElement("div");
-    head.className = "card-head";
-    head.innerHTML = `
-      <div class="card-head-top">
-        <div class="avatar">${initials(member.name)}</div>
-        <div>
-          <div class="card-name">${member.name}</div>
-          <div class="card-count">${doneCount} dari ${tasks.length} selesai</div>
-        </div>
-      </div>
-      <div class="progress-track"><div class="progress-fill" style="width:${tasks.length ? (doneCount / tasks.length) * 100 : 0}%"></div></div>
-    `;
-    card.appendChild(head);
+  const grouped = { pending: [], ongoing: [], done: [] };
+  allTasks.forEach((t) => {
+    grouped[statusColumn(t)].push(t);
+  });
 
-    const list = document.createElement("ul");
-    list.className = "task-list";
-    tasks.forEach((task) => list.appendChild(buildTaskItem(member, task)));
-    card.appendChild(list);
+  columns.forEach(({ key, label }) => {
+    const col = document.createElement("div");
+    col.className = "kanban-col";
+    col.dataset.status = key;
 
-    const addRow = document.createElement("div");
-    addRow.className = "add-task-row";
-    addRow.innerHTML = `
-      <form class="add-task-form">
-        <input type="text" placeholder="Tambah tugas baru…" maxlength="300" />
-        <button type="submit">+ Tambah</button>
-      </form>
-    `;
-    const form = addRow.querySelector("form");
-    const input = addRow.querySelector("input");
-    const btn = addRow.querySelector("button");
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const body = input.value.trim();
-      if (!body) return;
-      btn.disabled = true;
-      btn.textContent = "Menyimpan…";
-      try {
-        await apiAction({ action: "add_task", member_name: member.name, body });
-        input.value = "";
-        const res = await fetch(API);
-        if (res.ok) applyData(await res.json());
-      } catch (err) {
-        alert("Gagal menambah tugas: " + err.message);
-      }
-      btn.disabled = false;
-      btn.textContent = "+ Tambah";
+    const header = document.createElement("div");
+    header.className = "kanban-header";
+    header.innerHTML = `${label} <span class="kanban-count">${grouped[key].length}</span>`;
+    col.appendChild(header);
+
+    const list = document.createElement("div");
+    list.className = "kanban-list";
+
+    grouped[key].forEach((task) => {
+      const member = members.find((m) => m.name === task.member_name) || { name: task.member_name, accent: "primary" };
+      const card = document.createElement("article");
+      card.className = "card";
+      card.dataset.member = task.member_name;
+      card.dataset.text = task.body.toLowerCase();
+
+      const badge = document.createElement("div");
+      badge.className = "task-member-badge";
+      badge.innerHTML = `<span class="member-dot" style="background:var(--${member.accent}-fg)"></span>${escapeHtml(member.name)}`;
+      card.appendChild(badge);
+
+      const taskList = document.createElement("ul");
+      taskList.className = "task-list";
+      taskList.appendChild(buildTaskItem(member, task));
+      card.appendChild(taskList);
+
+      list.appendChild(card);
     });
-    card.appendChild(addRow);
 
-    els.grid.appendChild(card);
+    if (key === "pending") {
+      const addRow = document.createElement("div");
+      addRow.className = "add-task-row";
+      addRow.innerHTML = `
+        <form class="add-task-form">
+          <select class="add-task-member"></select>
+          <input type="text" placeholder="Tambah tugas baru…" maxlength="300" />
+          <button type="submit">+ Tambah</button>
+        </form>
+      `;
+      const memberSelect = addRow.querySelector(".add-task-member");
+      members.forEach((m) => {
+        const opt = document.createElement("option");
+        opt.value = m.name;
+        opt.textContent = m.name;
+        memberSelect.appendChild(opt);
+      });
+      const form = addRow.querySelector("form");
+      const input = addRow.querySelector("input");
+      const btn = addRow.querySelector("button");
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const body = input.value.trim();
+        if (!body) return;
+        btn.disabled = true;
+        btn.textContent = "Menyimpan…";
+        try {
+          await apiAction({ action: "add_task", member_name: memberSelect.value, body });
+          input.value = "";
+          const res = await fetch(API);
+          if (res.ok) applyData(await res.json());
+        } catch (err) {
+          alert("Gagal menambah tugas: " + err.message);
+        }
+        btn.disabled = false;
+        btn.textContent = "+ Tambah";
+      });
+      col.appendChild(addRow);
+    }
+
+    col.appendChild(list);
+    els.grid.appendChild(col);
   });
 }
 
@@ -706,14 +735,18 @@ function updateStats() {
 
 function render() {
   let anyVisible = false;
-  [...els.grid.children].forEach((card) => {
-    const memberMatches = activeMember === "all" || activeMember === card.dataset.member;
-    card.querySelectorAll(".task-item").forEach((item) => {
-      const textMatches = !searchTerm || item.dataset.text.includes(searchTerm);
-      item.classList.toggle("hidden", !(memberMatches && textMatches));
+  els.grid.querySelectorAll(".kanban-col").forEach((col) => {
+    let colVisible = false;
+    col.querySelectorAll(".card").forEach((card) => {
+      const memberMatches = activeMember === "all" || activeMember === card.dataset.member;
+      const textMatches = !searchTerm || (card.dataset.text && card.dataset.text.includes(searchTerm));
+      const show = memberMatches && textMatches;
+      card.style.display = show ? "" : "none";
+      if (show) { colVisible = true; anyVisible = true; }
     });
-    card.style.display = memberMatches ? "" : "none";
-    if (memberMatches) anyVisible = true;
+    const count = col.querySelectorAll('.card:not([style*="display: none"])').length;
+    const countEl = col.querySelector(".kanban-count");
+    if (countEl) countEl.textContent = count;
   });
   els.empty.style.display = anyVisible ? "none" : "block";
   els.grid.style.display = anyVisible ? "grid" : "none";
@@ -723,6 +756,19 @@ els.search.addEventListener("input", (e) => {
   searchTerm = e.target.value.trim().toLowerCase();
   render();
 });
+
+function statusColumn(task) {
+  if (task.done) return "done";
+  const t = (task.progress || "").toLowerCase();
+  if (t.includes("selesai") || t.includes("done") || t.includes("complete")) return "done";
+  if (t.includes("proses") || t.includes("progress") || t.includes("on going") || t.includes("ongoing") || t.includes("berjalan")) return "ongoing";
+  return "pending";
+}
+
+function memberAccent(name) {
+  const m = members.find((x) => x.name === name);
+  return m ? m.accent : "primary";
+}
 
 function progressClass(text) {
   const t = text.toLowerCase();
