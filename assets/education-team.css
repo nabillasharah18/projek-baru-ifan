@@ -85,7 +85,7 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
   outline-offset: 2px;
 }
 
-.wrap { max-width: 100%; margin: 0 auto; padding: 16px 16px 20px; box-sizing: border-box; overflow: hidden; }
+.wrap { max-width: 80%; margin: 0 auto; padding: 16px 16px 20px; box-sizing: border-box; overflow: hidden; }
 
 header.page-header { display: flex; flex-direction: column; gap: 2px; margin-bottom: 10px; }
 .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--primary); }
