@@ -66,7 +66,7 @@
 }
 
 * { box-sizing: border-box; }
-html, body { margin: 0; padding: 0; }
+html, body { margin: 0; padding: 0; overflow-x: hidden; }
 body {
   background: var(--bg);
   color: var(--text);
@@ -85,7 +85,7 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
   outline-offset: 2px;
 }
 
-.wrap { max-width: 100%; margin: 0 auto; padding: 16px 20px 32px; box-sizing: border-box; }
+.wrap { max-width: 100%; margin: 0 auto; padding: 16px 16px 20px; box-sizing: border-box; overflow: hidden; }
 
 header.page-header { display: flex; flex-direction: column; gap: 2px; margin-bottom: 10px; }
 .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--primary); }
@@ -206,7 +206,7 @@ h1 { font-size: clamp(20px, 2.6vw, 26px); font-weight: 800; margin: 0; text-wrap
 .task-list { list-style: none; margin: 0; padding: 2px 6px 4px; display: flex; flex-direction: column; gap: 0; flex: 1; }
 .task-item { border-radius: 8px; }
 .task-item.hidden { display: none; }
-.task-row { display: flex; align-items: flex-start; gap: 6px; padding: 4px 6px; border-radius: 8px; min-width: 0; }
+.task-row { display: flex; align-items: flex-start; gap: 6px; padding: 4px 6px; border-radius: 8px; min-width: 0; flex-wrap: wrap; }
 .task-row:hover { background: var(--surface-2); }
 
 .task-row input[type="checkbox"] {
@@ -222,7 +222,7 @@ h1 { font-size: clamp(20px, 2.6vw, 26px); font-weight: 800; margin: 0; text-wrap
 .task-text { font-size: 12.5px; color: var(--text); cursor: pointer; flex: 1; line-height: 1.35; min-width: 0; word-wrap: break-word; }
 .task-item.done .task-text { text-decoration: line-through; color: var(--text-muted); opacity: 0.75; }
 
-.task-meta { display: flex; align-items: center; gap: 4px; margin-top: 1px; flex-shrink: 0; }
+.task-meta { display: flex; align-items: center; gap: 3px; margin-top: 1px; flex-shrink: 0; flex-wrap: wrap; }
 .task-meta .progress-badge { font-size: 9px; padding: 0 6px; }
 .comment-toggle {
   display: inline-flex; align-items: center; gap: 3px; background: none; border: none;
